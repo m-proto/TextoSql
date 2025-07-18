@@ -5,8 +5,8 @@ import json
 import hashlib
 import time
 from typing import Optional, Any, Dict
-from infrastructure.settings import settings
-from infrastructure.logging import logger
+from core.settings import settings
+from core.logging import logger
 
 class CacheManager:
     def __init__(self):

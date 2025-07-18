@@ -1,5 +1,5 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
-from infrastructure.settings import settings
+from core.settings import settings
 
 def init_llm():
     return ChatGoogleGenerativeAI(
