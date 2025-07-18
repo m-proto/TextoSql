@@ -1,0 +1,16 @@
+langchain
+langchain_google_genai
+sqlalchemy
+sqlalchemy-redshift
+python-dotenv
+psycopg2-binary
+fastapi
+uvicorn[standard]
+pydantic
+structlog
+tenacity
+pytest
+pytest-asyncio
+httpx
+psutil
+prometheus-client

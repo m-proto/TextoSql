@@ -1,0 +1,46 @@
+# Fichiers à ignorer par Git
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environment variables (IMPORTANT!)
+.env
+.env.local
+.env.staging
+.env.production
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite3
+
+# Cache
+.cache/
+.pytest_cache/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
+# Security reports
+security-report.json
+
+# Credentials (IMPORTANT!)
+credentials.json
+secrets.json
+config.json
+
+# VS Code
+.vscode/
+
+# Backup files
+*.bak
+*.swp
+*.tmp
