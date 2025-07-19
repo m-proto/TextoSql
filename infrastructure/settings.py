@@ -1,10 +1,5 @@
 """
-Configuration robuste avec v    # Rate Limiting
-    rate_limit_requests: int = 100
-    rate_limit_window: int = 3600  # 1 hour
-    
-    # Cache (mémoire gratuit)
-    cache_ttl: int = 3600  # 1 houron Pydantic
+Configuration robuste avec Pydantic
 """
 from pydantic_settings import BaseSettings
 from pydantic import field_validator
@@ -27,7 +22,7 @@ class Settings(BaseSettings):
     google_api_key: str
     
     # Application Settings
-    app_name: str = "TextToSQL API"
+    app_name: str = "TextToSQL ChatBot"
     app_version: str = "1.0.0"
     debug: bool = False
     
@@ -40,8 +35,7 @@ class Settings(BaseSettings):
     rate_limit_requests: int = 100
     rate_limit_window: int = 3600  # 1 hour
     
-    # Caching
-    redis_url: Optional[str] = None
+    # Cache (mémoire gratuit)
     cache_ttl: int = 3600  # 1 hour
     
     # Logging

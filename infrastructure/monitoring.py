@@ -72,6 +72,45 @@ class MetricsCollector:
                 "cpu_usage_percent": cpu_usage
             }
         }
+    
+    def health_check(self) -> Dict[str, Any]:
+        """Retourne l'état de santé du système avec statut global"""
+        memory = psutil.virtual_memory()
+        cpu_percent = psutil.cpu_percent()
+        
+        # Détermine le statut global
+        memory_healthy = memory.percent < 80
+        cpu_healthy = cpu_percent < 80
+        error_rate = self.error_count / self.request_count if self.request_count > 0 else 0
+        error_rate_healthy = error_rate < 0.1  # Moins de 10% d'erreurs
+        
+        overall_healthy = memory_healthy and cpu_healthy and error_rate_healthy
+        
+        if overall_healthy:
+            status = "healthy"
+        elif memory.percent > 90 or cpu_percent > 90 or error_rate > 0.2:
+            status = "unhealthy"
+        else:
+            status = "degraded"
+        
+        return {
+            "status": status,
+            "checks": {
+                "memory": {
+                    "healthy": memory_healthy,
+                    "usage_percent": memory.percent
+                },
+                "cpu": {
+                    "healthy": cpu_healthy,
+                    "usage_percent": cpu_percent
+                },
+                "error_rate": {
+                    "healthy": error_rate_healthy,
+                    "rate": error_rate
+                }
+            },
+            "uptime_seconds": time.time() - self.start_time
+        }
 
 # Instance globale
 metrics = MetricsCollector()

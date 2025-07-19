@@ -1,0 +1,14 @@
+# Configuration Streamlit optimisée
+[server]
+enableCORS = false
+enableXsrfProtection = false
+headless = true
+
+[theme]
+primaryColor = "#0066cc"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#ffffff"
+textColor = "#000000"
+
+[browser]
+gatherUsageStats = false
