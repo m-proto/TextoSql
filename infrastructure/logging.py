@@ -4,7 +4,7 @@ Logging structuré pour la production
 import structlog
 import logging
 import sys
-from core.settings import settings
+from infrastructure.settings import settings
 
 def setup_logging():
     """Configure structured logging"""

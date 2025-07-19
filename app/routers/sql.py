@@ -7,6 +7,7 @@ from app.dependencies import rate_limit_check
 from domain.sql.service import generate_sql_query_only
 from infrastructure.cache import cache_manager
 from infrastructure.logging import logger
+from infrastructure.monitoring import metrics
 import time
 
 router = APIRouter(prefix="/sql", tags=["SQL"])
@@ -43,6 +44,8 @@ async def generate_sql(
         
         if cached_result:
             logger.info("Cache hit for SQL generation")
+            metrics.record_cache_hit()  # 📊 Enregistrer cache hit
+            metrics.record_request(time.time() - start_time, success=True)
             return SQLQueryResponse(
                 sql=cached_result["sql"],
                 execution_time=time.time() - start_time,
@@ -51,9 +54,12 @@ async def generate_sql(
             )
         
         # Génération SQL
+        metrics.record_cache_miss()  # 📊 Enregistrer cache miss
+        metrics.record_sql_generation()  # 📊 Enregistrer génération SQL
         sql = generate_sql_query_only(request.question, llm, db)
         
         if not sql:
+            metrics.record_request(time.time() - start_time, success=False)  # 📊 Erreur
             raise HTTPException(status_code=400, detail="Failed to generate SQL")
         
         response_data = {
@@ -76,11 +82,14 @@ async def generate_sql(
         if request.use_cache:
             cache_manager.cache_sql_result(request.question, response_data)
         
+        metrics.record_request(time.time() - start_time, success=True)  # 📊 Succès
         return SQLQueryResponse(**response_data)
         
     except HTTPException:
+        metrics.record_request(time.time() - start_time, success=False)  # 📊 Erreur HTTP
         raise
     except Exception as e:
+        metrics.record_request(time.time() - start_time, success=False)  # 📊 Erreur générale
         logger.error("SQL generation failed", error=str(e), question=request.question)
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 

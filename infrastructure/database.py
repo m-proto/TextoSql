@@ -6,8 +6,8 @@ from sqlalchemy.pool import QueuePool
 from sqlalchemy import inspect
 from langchain_community.utilities import SQLDatabase
 from tenacity import retry, stop_after_attempt, wait_exponential
-from core.settings import settings
-from core.logging import logger
+from infrastructure.settings import settings
+from infrastructure.logging import logger
 import time
 
 class DatabaseManager:

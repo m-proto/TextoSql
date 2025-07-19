@@ -1,8 +1,11 @@
-# Fichiers à ignorer par Git
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+*.egg-info/
+dist/
+build/
 
 # Environment variables (IMPORTANT!)
 .env
@@ -13,10 +16,37 @@ __pycache__/
 # Logs
 *.log
 logs/
+sql_queries.log
 
 # Database
 *.db
 *.sqlite3
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
 
 # Cache
 .cache/

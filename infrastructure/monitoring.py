@@ -4,8 +4,8 @@ Monitoring et métriques pour la production
 import time
 import psutil
 from typing import Dict, Any
-from core.logging import logger
-from core.settings import settings
+from infrastructure.logging import logger
+from infrastructure.settings import settings
 
 class MetricsCollector:
     """Collecteur de métriques pour le monitoring"""

@@ -67,20 +67,12 @@ class Settings(BaseSettings):
     def redshift_dsn(self) -> str:
         return f"redshift+psycopg2://{self.redshift_user}:{self.redshift_password}@{self.redshift_host}:{self.redshift_port}/{self.redshift_db}"
     
-    class Config:
-        env_file = ".env"
-        env_prefix = ""
-        case_sensitive = False
-        # Mapping des variables d'environnement
-        fields = {
-            'redshift_user': {'env': 'REDSHIFT_USER'},
-            'redshift_password': {'env': 'REDSHIFT_PASSWORD'},
-            'redshift_host': {'env': 'REDSHIFT_HOST'},
-            'redshift_port': {'env': 'REDSHIFT_PORT'},
-            'redshift_db': {'env': 'REDSHIFT_DB'},
-            'redshift_schema': {'env': 'REDSHIFT_SCHEMA'},
-            'google_api_key': {'env': 'GOOGLE_API_KEY'},
-        }
+    model_config = {
+        "env_file": ".env",
+        "env_prefix": "",
+        "case_sensitive": False,
+        "extra": "ignore"  # Ignore les champs supplémentaires
+    }
 
 # Instance globale des settings
 settings = Settings()

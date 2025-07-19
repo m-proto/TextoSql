@@ -1,4 +1,5 @@
 langchain
+langchain_community
 langchain_google_genai
 sqlalchemy
 sqlalchemy-redshift
@@ -7,6 +8,7 @@ psycopg2-binary
 fastapi
 uvicorn[standard]
 pydantic
+pydantic-settings
 structlog
 tenacity
 pytest

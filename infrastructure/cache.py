@@ -5,8 +5,8 @@ import json
 import hashlib
 import time
 from typing import Optional, Any, Dict
-from core.settings import settings
-from core.logging import logger
+from infrastructure.settings import settings
+from infrastructure.logging import logger
 
 class CacheManager:
     def __init__(self):
@@ -24,30 +24,26 @@ class CacheManager:
         return f"{prefix}:{hash_object.hexdigest()}"
     
     def get(self, key: str) -> Optional[Any]:
-        """Récupère une valeur du cache"""
-        if not self.redis_client:
-            return None
-        
-        try:
-            value = self.redis_client.get(key)
-            if value:
-                return json.loads(value)
-        except Exception as e:
-            logger.error("Cache get failed", key=key, error=str(e))
+        """Récupère une valeur du cache mémoire"""
+        if key in self.memory_cache:
+            cache_item = self.memory_cache[key]
+            if not self._is_expired(cache_item):
+                return cache_item["value"]
+            else:
+                # Supprime l'item expiré
+                del self.memory_cache[key]
         return None
-    
+
     def set(self, key: str, value: Any, ttl: int = None) -> bool:
-        """Stocke une valeur dans le cache"""
-        if not self.redis_client:
-            return False
+        """Stocke une valeur dans le cache mémoire"""
+        ttl = ttl or settings.cache_ttl
+        expires_at = time.time() + ttl
         
-        try:
-            ttl = ttl or settings.cache_ttl
-            self.redis_client.setex(key, ttl, json.dumps(value))
-            return True
-        except Exception as e:
-            logger.error("Cache set failed", key=key, error=str(e))
-            return False
+        self.memory_cache[key] = {
+            "value": value,
+            "expires_at": expires_at
+        }
+        return True
     
     def cache_sql_result(self, query: str, result: Any) -> bool:
         """Cache le résultat d'une requête SQL"""
